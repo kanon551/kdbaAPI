@@ -30,8 +30,8 @@ public class BarMembers {
     private String lfNumber;
     private String admissionDate;
 
-    private boolean cop;
-    private String copNumber;
+    private String cop;
+    private String remarks;
 
     //private String password;
     private Binary image;

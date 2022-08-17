@@ -46,10 +46,10 @@ public class BarController {
                                            @RequestParam String enrollmentDate,@RequestParam String firstname,
                                            @RequestParam String dob,@RequestParam String gender,
                                            @RequestParam String mobile,@RequestParam String lfNumber,@RequestParam String admissionDate,
-                                           @RequestParam String copNumber, @RequestParam boolean cop) throws IOException {
+                                           @RequestParam String remarks, @RequestParam String cop) throws IOException {
 
         return barService.saveBarMember(file,enrollmentNo,enrollmentDate,firstname,dob,gender,
-                                        mobile,lfNumber,admissionDate,copNumber,cop);
+                                        mobile,lfNumber,admissionDate,remarks,cop);
     }
 
 
@@ -66,11 +66,11 @@ public class BarController {
                                        @RequestParam String enrollmentDate,@RequestParam String firstname,
                                        @RequestParam String dob,@RequestParam String gender,
                                        @RequestParam String mobile,@RequestParam String lfNumber,@RequestParam String admissionDate,
-                                       @RequestParam String copNumber, @RequestParam boolean cop,  @RequestParam String id) throws IOException {
+                                       @RequestParam String remarks, @RequestParam String cop,  @RequestParam String id) throws IOException {
 
         BarMembers existingMembers = barMembersRepository.findById(id).orElse(null);
         return barService.updateMembers(existingMembers,file,enrollmentNo,enrollmentDate,firstname,dob,gender,
-                mobile,lfNumber,admissionDate,copNumber,cop);
+                mobile,lfNumber,admissionDate,remarks,cop);
     }
 
     @DeleteMapping("/barMember/{id}")

@@ -28,8 +28,8 @@ public class BarService {
 
     public GenericResponse saveBarMember(MultipartFile file,String enrollmentNo,String enrollmentDate,String firstname,
                                          String dob,String gender,
-                                         String mobile,String lfNumber,String admissionDate,String copNumber,
-                                         boolean cop ) throws IOException {
+                                         String mobile,String lfNumber,String admissionDate,String remarks,
+                                         String cop ) throws IOException {
 
         GenericResponse<String, String,BarMembers> generics= new GenericResponse<String, String,BarMembers>();
         BarMembers members = barMembersRepository.findByEnrollmentNo(enrollmentNo);
@@ -57,7 +57,7 @@ public class BarService {
 
             Date admissionDt = new Date(admissionDate);
             barMembers.setAdmissionDate(admissionDt.toString());
-            barMembers.setCopNumber(copNumber);
+            barMembers.setRemarks(remarks);
 //            barMembers.setAdmin(admin);
             barMembers.setCop(cop);
 
@@ -97,7 +97,7 @@ public class BarService {
     public GenericResponse updateMembers(BarMembers existingMembers, MultipartFile file, String enrollmentNo,
                                          String enrollmentDate, String firstname, String dob, String gender,
                                          String mobile, String lfNumber, String admissionDate,
-                                         String copNumber, boolean cop)throws IOException {
+                                         String remarks, String cop)throws IOException {
 
         existingMembers.setEnrollmentNo(enrollmentNo);
         existingMembers.setFirstname(firstname);
@@ -105,7 +105,7 @@ public class BarService {
         existingMembers.setMobile(mobile);
         existingMembers.setLfNumber(lfNumber);
         existingMembers.setCop(cop);
-        existingMembers.setCopNumber(copNumber);
+        existingMembers.setRemarks(remarks);
 
         Date enrollDt = new Date(enrollmentDate);
         existingMembers.setEnrollmentDate(enrollDt.toString());
