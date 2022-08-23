@@ -16,7 +16,7 @@ import java.util.function.Function;
 public class JwtUtil {
 
     private String SECRET_KEY = "KDBA";
-    private int timeOut = 60000;
+    private int timeOut = 900000;
 
     public String extractEmail(String token) {
         return extractClaim(token, Claims::getSubject);
