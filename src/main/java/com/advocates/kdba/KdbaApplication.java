@@ -1,12 +1,19 @@
 package com.advocates.kdba;
 
+import com.advocates.kdba.filter.JwtRequestFilter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.multipart.MultipartResolver;
-import org.springframework.web.multipart.commons.CommonsMultipartResolver;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @SpringBootApplication
 public class KdbaApplication {
@@ -22,12 +29,42 @@ public class KdbaApplication {
 		return new BCryptPasswordEncoder();
 	}
 
-//	@Bean
-//	public MultipartResolver multipartResolver() {
-//		CommonsMultipartResolver multipartResolver
-//				= new CommonsMultipartResolver();
-//		multipartResolver.setMaxUploadSize(53477376);
-//		return multipartResolver;
-//	}
+	@Configuration
+	@EnableWebSecurity
+	class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+
+
+		@Autowired
+		private JwtRequestFilter jwtFilter;
+
+		@Override
+		public void configure(WebSecurity web) throws Exception {
+			web.ignoring().antMatchers("/api/kdba/getBarMembers");
+			web.ignoring().antMatchers("/api/kdba/registerAdmin");
+			web.ignoring().antMatchers("/swagger-ui/index.html");
+			web.ignoring().antMatchers("/kdbaSwagger");
+			web.ignoring().antMatchers("/swagger-ui/swagger-ui.css");
+			web.ignoring().antMatchers("/swagger-ui/swagger-ui-bundle.js");
+			web.ignoring().antMatchers("/swagger-ui/swagger-ui-standalone-preset.js");
+			web.ignoring().antMatchers("/v3/api-docs/swagger-config");
+			web.ignoring().antMatchers("/v3/api-docs");
+			web.ignoring().antMatchers("/swagger-ui/favicon-32x32.png");
+			web.ignoring().antMatchers("/swagger-ui/favicon-16x16.png");
+		}
+
+		@Override
+		protected void configure(HttpSecurity httpSecurity) throws Exception {
+			httpSecurity.cors().and().csrf().disable()
+					.authorizeRequests().antMatchers("/api/kdba/login").permitAll().
+					anyRequest().authenticated().and().
+					exceptionHandling().and().sessionManagement()
+					.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+			httpSecurity.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+
+		}
+
+
+
+	}
 
 }

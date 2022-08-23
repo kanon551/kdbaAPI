@@ -53,7 +53,7 @@ public class BarController {
     }
 
 
-    @GetMapping("/barMember")
+    @GetMapping("/getBarMembers")
     @Operation(security = @SecurityRequirement(name = AUTH_MECHANISM),summary = "Find Members ", description = "Get Members", tags = { "Bar Member" })
     public GenericResponse fetchMembers(){
         return barService.getMembers();
